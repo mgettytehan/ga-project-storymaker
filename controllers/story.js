@@ -6,9 +6,9 @@ const storyRouter = express.Router()
 
 storyRouter.route('/')
   .post( (req, res) => {
-    storyApi(req.body)
+    storyApi.addStories(req.body)
     .then(newStory => res.send(newStory))
-    .catch(next);
+    .catch(err => next(err));
   });
 
 // templateRouter.get('/', (req, res) => {
