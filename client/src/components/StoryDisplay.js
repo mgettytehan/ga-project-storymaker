@@ -65,12 +65,15 @@ export default class StoryDisplay extends Component {
     }
 
     componentDidMount() {
-        const currentNode = this.getFirstNode(this.state.story);
-        this.setState({currentNode: currentNode});
+        this.setNewCurrentNode(this.state.story.firstNodeId);
+    }
+    //to be refactored with fetch when connecting back end
+    findNodeById(nodeId) {
+        return this.state.storyNodes.find(node => node._id === this.state.story.firstNodeId);
     }
 
-    getFirstNode(story) {
-        return {...this.state.storyNodes.find(node => node._id === story.firstNodeId)}
+    setNewCurrentNode(nodeId) {
+        this.setState({currentNode: this.findNodeById(nodeId)});
     }
 
     render() {
