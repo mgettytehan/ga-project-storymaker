@@ -15,10 +15,14 @@ const StoryNodeSchema = new mongoose.Schema({
 StoryNodeCollection = mongoose.model('StoryNode', StoryNodeSchema)
 
 //add one or more stories
-const addStoryNodes = (storyNodes) => {
-  return StoryNodeCollection.insertMany(storyNodes);
-}
+const addStoryNodes = (storyNodes) => StoryNodeCollection.insertMany(storyNodes);
+
+const getStoryNodeById = (storyNodeId) => StoryNodeCollection.findById(storyNodeId);
+
+const updateStoryNode = (storyNodeId, storyNode) => StoryNodeCollection.findByIdAndUpdate(storyNodeId, storyNode);
 
 module.exports = {
-  addStoryNodes
+  addStoryNodes,
+  getStoryNodeById,
+  updateStoryNode
 }

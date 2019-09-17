@@ -32,9 +32,17 @@ storyRouter.route('/:storyId/storynodes/')
       .catch(err => next(err));
   });
 
-// templateRouter.get('/', (req, res) => {
-//   res.json(templateApi.getHelloWorldString())
-// })
+storyRouter.route('/:storyId/storynodes/:sNodeId')
+  .get( (req, res) => {
+    storyNodeApi.getStoryNodeById(req.params.sNodeId)
+      .then(storyNode => res.json(storyNode))
+      .catch(err => next(err));
+  })
+  .put( (req, res) => {
+    storyApi.updateStoryNode(req.params.sNodeId, req.body)
+      .then(oldNode => res.send(oldNode))
+      .catch(err => next(err));
+  });
 
 module.exports = {
   storyRouter
