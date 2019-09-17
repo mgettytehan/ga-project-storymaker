@@ -25,36 +25,61 @@ const storyDetails = (storyTitle) => {
 
 export default class StoryDisplay extends Component {
     //state hardcoded for testing
+    //storyNodes will not exist when DB is connected
     state = {
         story: {
             title: "Hardcoded Test Story",
             firstNodeId: "test123"
         },
-        currentNode: {
-            storyId: "test123",
-            nodeTitle: "The Start",
-            storyText: "And so it begins.",
-            choices: [
-                {
-                    choiceText: "Fly the Excalibur",
-                    nextNode: "test124"
-                },
-                {
-                    choiceText: "Give up on curing the Drakh plague",
-                    nextNode: "test125"
-                }
-            ]
-        }
+        currentNode: {},
+        storyNodes: [
+            {
+                _id: "test123",
+                nodeTitle: "The Start",
+                storyText: "And so it begins.",
+                choices: [
+                    {
+                        choiceText: "Fly the Excalibur",
+                        nextNode: "test124"
+                    },
+                    {
+                        choiceText: "Give up on curing the Drakh plague",
+                        nextNode: "test125"
+                    }
+                ]
+            },
+            {
+                _id: "test124",
+                nodeTitle: "OK End",
+                storyText: "You fly around space for a while until your show gets cancelled.\nOh well.\nThe End.",
+                choices: []
+            },
+            {
+                _id: "test125",
+                nodeTitle: "Bad End",
+                storyText: "Heartless. The Drakh plague wipes out everyone on Earth.\nThe End.",
+                choices: []
+            }
+        ]
+    }
+
+    componentDidMount() {
+        console.log(this.getFirstNode(this.state.story));
+    }
+
+    getFirstNode(story) {
+        return {...this.state.storyNodes.find(node => node._id === story.firstNodeId)}
+
     }
 
     render() {
         return (
             <div>
-                {storyDetails( this.state.story.title )}
+                {/* {storyDetails( this.state.story.title )}
                 {storyTextDisplay(
                     this.state.currentNode.storyText
                     , this.state.currentNode.choices
-                )}
+                )} */}
             </div>
         );
     }
