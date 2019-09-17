@@ -22,6 +22,11 @@ storyRouter.route('/:storyId')
     storyApi.getStory(req.params.storyId)
       .then(story => res.json(story))
       .catch(err => next(err));
+  })
+  .put( (req, res) => {
+    storyApi.updateStory(req.params.storyId, req.body)
+    .then(oldStory => res.json(oldStory))
+    .catch(err => next(err));
   });
 
 storyRouter.route('/:storyId/storynodes/')
@@ -39,7 +44,7 @@ storyRouter.route('/:storyId/storynodes/:sNodeId')
       .catch(err => next(err));
   })
   .put( (req, res) => {
-    storyApi.updateStoryNode(req.params.sNodeId, req.body)
+    storyNodeApi.updateStoryNode(req.params.sNodeId, req.body)
       .then(oldNode => res.send(oldNode))
       .catch(err => next(err));
   });
