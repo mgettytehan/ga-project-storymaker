@@ -7,11 +7,15 @@ const StorySchema = new mongoose.Schema({
 
 StoryCollection = mongoose.model('Story', StorySchema)
 
+const getStories = () => StoryCollection.find();
+
 //add one or more stories
-const addStories = (stories) => {
-  return StoryCollection.insertMany(stories);
-}
+const addStories = (stories) => StoryCollection.insertMany(stories);
+
+const getStory = (storyId) => StoryCollection.findById(storyId);
 
 module.exports = {
-  addStories
+  addStories,
+  getStories,
+  getStory,
 }
