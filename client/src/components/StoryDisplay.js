@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 
-const storyLink = (choice) => {
+const storyLink = (choice, changeCurrentNode) => {
     //current contains dummy link instead of choice action
-    return (<p><a href="#">{choice.choiceText}</a></p>);
+    return (<button onClick={() => changeCurrentNode(choice.nextNode)}>{choice.choiceText}</button>);
 }
 
 const storyText = (text) => {
     return (<p>{text}</p>);
 }
 
-const storyTextDisplay = (currentNode) => {
+const storyTextDisplay = (currentNode, changeCurrentNode) => {
     //'no choices option is placeholder
     return (
         <div>
             {storyText(currentNode.storyText)}
-            {currentNode.choices ? currentNode.choices.map(storyLink) : "No choices"}
+            {currentNode.choices ? currentNode.choices.map(choice => storyLink(choice, changeCurrentNode)) : "No choices"}
         </div>
     );
 }
@@ -64,12 +64,18 @@ export default class StoryDisplay extends Component {
         ]
     }
 
+    constructor(props) {
+        super(props);
+        //bind setCurrentNode so it can be passed
+        this.setNewCurrentNode = this.setNewCurrentNode.bind(this);
+    }
+
     componentDidMount() {
         this.setNewCurrentNode(this.state.story.firstNodeId);
     }
     //to be refactored with fetch when connecting back end
     findNodeById(nodeId) {
-        return this.state.storyNodes.find(node => node._id === this.state.story.firstNodeId);
+        return this.state.storyNodes.find(node => node._id === nodeId);
     }
 
     setNewCurrentNode(nodeId) {
@@ -80,7 +86,7 @@ export default class StoryDisplay extends Component {
         return (
             <div>
                 {storyDetails( this.state.story.title )}
-                {storyTextDisplay( this.state.currentNode )}
+                {storyTextDisplay( this.state.currentNode, this.setNewCurrentNode )}
             </div>
         );
     }
