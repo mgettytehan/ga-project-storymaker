@@ -9,11 +9,12 @@ const storyText = (text) => {
     return (<p>{text}</p>);
 }
 
-const storyTextDisplay = (text, choices) => {
+const storyTextDisplay = (currentNode) => {
+    //'no choices option is placeholder
     return (
         <div>
-            {storyText(text)}
-            {choices.map(storyLink)}
+            {storyText(currentNode.storyText)}
+            {currentNode.choices ? currentNode.choices.map(storyLink) : "No choices"}
         </div>
     );
 }
@@ -64,22 +65,19 @@ export default class StoryDisplay extends Component {
     }
 
     componentDidMount() {
-        console.log(this.getFirstNode(this.state.story));
+        const currentNode = this.getFirstNode(this.state.story);
+        this.setState({currentNode: currentNode});
     }
 
     getFirstNode(story) {
         return {...this.state.storyNodes.find(node => node._id === story.firstNodeId)}
-
     }
 
     render() {
         return (
             <div>
-                {/* {storyDetails( this.state.story.title )}
-                {storyTextDisplay(
-                    this.state.currentNode.storyText
-                    , this.state.currentNode.choices
-                )} */}
+                {storyDetails( this.state.story.title )}
+                {storyTextDisplay( this.state.currentNode )}
             </div>
         );
     }
