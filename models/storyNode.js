@@ -6,8 +6,8 @@ const ChoiceSchema = new mongoose.Schema({
 });
 
 const StoryNodeSchema = new mongoose.Schema({
+  storyId: mongoose.Schema.ObjectId,
   nodeTitle: String,
-  storyId: mongoose.Schema.Types.ObjectId,
   storyText: String,
   choices: [ChoiceSchema]
 });
