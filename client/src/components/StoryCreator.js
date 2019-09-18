@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 
-const saveButton = (text = "Save") => {
-    return (<input type="submit" value={text} />);
+const saveButton = (handler, text = "Save") => {
+    return (<input type="submit" value={text} onClick={handler} />);
 }
 //textField and editArea's values are loaded in from NodeEditor's 'node'
-const textField = (name, value, label = "Title") => {
+const textField = (name, value, handler, label = "Title") => {
     return (
         <div>
             <label>{label}</label>
-            <input type="text" name={name} value={value}/>
+            <input type="text" name={name} value={value} onChange={handler}/>
         </div>
     );
 }
 
-const editArea = (name, value) => {
-    return (<textarea name={name}>{value}</textarea>);
+const editArea = (name, value, handler) => {
+    return (<textarea name={name} onChange={handler}>{value}</textarea>);
 }
 
 class NodeEditor extends Component {
@@ -25,15 +25,28 @@ class NodeEditor extends Component {
             choices : []
         }
     }
+
     componentWillMount() {
         this.setState({node: this.props.currentNode});
     }
+
+    handleChange = (evnt) => {
+        const node = {...this.state.node};
+        node[evnt.target.name] = evnt.target.value;
+        this.setState({node})
+    }
+
+    handleSave = (evnt) => {
+        evnt.preventDefault();
+        this.props.updateCurrentNode(this.state.node);
+    }
+
     render() {
         return(
             <form>
-                {editArea("storyText", this.state.node.storyText)}
-                {textField("nodeTitle", this.state.node.nodeTitle)}
-                {saveButton()}
+                {editArea("storyText", this.state.node.storyText, this.handleChange)}
+                {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
+                {saveButton(this.handleSave)}
             </form>
         );
     }
@@ -79,8 +92,21 @@ export default class StoryCreator extends Component {
         ]
     }
 
+    //may be able to remove once db integrated
+    constructor(props) {
+        super(props);
+        //bind setCurrentNode so it can be passed
+        this.updateCurrentNode = this.updateCurrentNode.bind(this);
+    }
+
     componentWillMount() {
         this.setNewCurrentNode(this.state.story.firstNodeId);
+    }
+    //will change a lot when db integrated
+    updateCurrentNode(updatedNode) {
+        const nodes = [...this.state.storyNodes];
+        const newNodes = nodes.map(node => node._id === updatedNode._id ? updatedNode : node);
+        this.setState({storyNodes: newNodes});
     }
 
     findNodeById(nodeId) {
@@ -94,7 +120,7 @@ export default class StoryCreator extends Component {
     render() {
         return (
             <div>
-                <NodeEditor currentNode={this.state.currentNode} />
+                <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} />
             </div>
         );
     }
