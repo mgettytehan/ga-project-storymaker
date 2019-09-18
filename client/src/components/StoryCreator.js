@@ -17,6 +17,30 @@ const editArea = (name, value, handler) => {
     return (<textarea name={name} onChange={handler}>{value}</textarea>);
 }
 
+//TODO: eventually list linked node titles instead of choice text
+const choiceList = (choice) => {
+    return (
+        <span>{choice.choiceText} </span>
+    );
+}
+
+const nodeCard = (node) => {
+    return(
+        <div>
+            <p>{node.nodeTitle}</p>
+            <p>Links: {node.choices.length ? node.choices.map(choiceList) : "End"}</p>
+        </div>
+    );
+}
+
+const nodeDisplay = (storyNodes) => {
+    return(
+        <div>
+            {storyNodes.map(nodeCard)}
+        </div>
+    );
+}
+
 class NodeEditor extends Component {
     state = {
         node: {
@@ -121,6 +145,7 @@ export default class StoryCreator extends Component {
         return (
             <div>
                 <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} />
+                {nodeDisplay(this.state.storyNodes)}
             </div>
         );
     }
