@@ -25,17 +25,15 @@ class NodeEditor extends Component {
             choices : []
         }
     }
+    componentWillMount() {
+        this.setState({node: this.props.currentNode});
+    }
     render() {
         return(
             <form>
-                <div>
-
-                </div>
-                <div>
-                    {editArea("storyText", this.state.node.storyText)}
-                    {textField("nodeTitle", this.state.node.nodeTitle)}
-                    {saveButton()}
-                </div>
+                {editArea("storyText", this.state.node.storyText)}
+                {textField("nodeTitle", this.state.node.nodeTitle)}
+                {saveButton()}
             </form>
         );
     }
@@ -81,11 +79,23 @@ export default class StoryCreator extends Component {
         ]
     }
 
+    componentWillMount() {
+        this.setNewCurrentNode(this.state.story.firstNodeId);
+    }
+
+    findNodeById(nodeId) {
+        return this.state.storyNodes.find(node => node._id === nodeId);
+    }
+
+    setNewCurrentNode(nodeId) {
+        this.setState({currentNode: this.findNodeById(nodeId)});
+    }
+
     render() {
         return (
-        <div>
-            <NodeEditor />
-        </div>
+            <div>
+                <NodeEditor currentNode={this.state.currentNode} />
+            </div>
         );
     }
 }
