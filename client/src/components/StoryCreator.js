@@ -1,11 +1,43 @@
 import React, { Component } from 'react';
 
+const saveButton = (text = "Save") => {
+    return (<input type="submit" value={text} />);
+}
+//textField and editArea's values are loaded in from NodeEditor's 'node'
+const textField = (name, value, label = "Title") => {
+    return (
+        <div>
+            <label>{label}</label>
+            <input type="text" name={name} value={value}/>
+        </div>
+    );
+}
+
+const editArea = (name, value) => {
+    return (<textarea name={name}>{value}</textarea>);
+}
+
 class NodeEditor extends Component {
     state = {
-
+        node: {
+            nodeTitle : "Title",
+            storyText : "Story Text",
+            choices : []
+        }
     }
     render() {
+        return(
+            <form>
+                <div>
 
+                </div>
+                <div>
+                    {editArea("storyText", this.state.node.storyText)}
+                    {textField("nodeTitle", this.state.node.nodeTitle)}
+                    {saveButton()}
+                </div>
+            </form>
+        );
     }
 }
 
@@ -50,6 +82,10 @@ export default class StoryCreator extends Component {
     }
 
     render() {
-
+        return (
+        <div>
+            <NodeEditor />
+        </div>
+        );
     }
 }
