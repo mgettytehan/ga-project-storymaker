@@ -28,10 +28,7 @@ export default class StoryDisplay extends Component {
     //state hardcoded for testing
     //storyNodes will not exist when DB is connected
     state = {
-        story: {
-            title: "Hardcoded Test Story",
-            firstNodeId: "test123"
-        },
+        story: {},
         currentNode: {},
         storyNodes: [
             {
@@ -74,20 +71,20 @@ export default class StoryDisplay extends Component {
 
     componentWillMount() {
         //set the story and pull the first node
-        this.setState({story: this.pullStory()});
-        this.setNewCurrentNode(this.state.story.firstNodeId);
+        this.pullStoryAndFirstNode().then(newState => this.setState(newState));
     }
 
-    pullStory = async () => {
-        try {
-            const res = await fetch(`/api/stories/${this.props.storyId}`);
-            return await res.json();
-        }
-        catch (err) {
-            return console.log(err);
-        }
+    pullStoryAndFirstNode = () => {
+        return fetch(`/api/stories/${this.props.storyId}`)
+        .then(res => res.json())
+        .then(story => {
+            return fetch(`/api/stories/${story._id}/storynodes/${story.firstNodeId}`)
+            .then(res => res.json())
+            .then(currentNode => ({story, currentNode}))
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
     }
-
     //to be refactored with fetch when connecting back end
     findNodeById(nodeId) {
         return this.state.storyNodes.find(node => node._id === nodeId);
