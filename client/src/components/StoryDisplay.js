@@ -13,7 +13,7 @@ const storyTextDisplay = (currentNode, changeCurrentNode) => {
     //'no choices option is placeholder
     return (
         <div>
-            {storyText(currentNode.storyText)}
+            {currentNode.storyText ? storyText(currentNode.storyText) : ""}
             {currentNode.choices ? currentNode.choices.map(choice => storyLink(choice, changeCurrentNode)) : "No choices"}
         </div>
     );
@@ -85,20 +85,24 @@ export default class StoryDisplay extends Component {
         })
         .catch(err => console.log(err));
     }
+    pull
+
     //to be refactored with fetch when connecting back end
-    findNodeById(nodeId) {
-        return this.state.storyNodes.find(node => node._id === nodeId);
+    findNodeById = (nodeId) => {
+        return fetch(`/api/stories/${this.props.storyId}/storynodes/${nodeId}`)
+        .then(res => res.json())
+        .catch(err => console.log(err));
     }
 
-    setNewCurrentNode(nodeId) {
-        this.setState({currentNode: this.findNodeById(nodeId)});
+    setNewCurrentNode = (nodeId) => {
+        this.findNodeById(nodeId).then(currentNode => this.setState({currentNode}));
     }
 
     render() {
         return (
             <div>
                 {storyDetails( this.state.story.title )}
-                {storyTextDisplay( this.state.currentNode, this.setNewCurrentNode )}
+                {this.state.currentNode ? storyTextDisplay( this.state.currentNode, this.setNewCurrentNode) : "We lost the story..." }
             </div>
         );
     }
