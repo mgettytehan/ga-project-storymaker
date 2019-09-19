@@ -66,13 +66,28 @@ export default class StoryDisplay extends Component {
 
     constructor(props) {
         super(props);
+        //set a dummy id as props
+        this.props.storyId = "5d7fd3f932aecfc147ec3785";
         //bind setCurrentNode so it can be passed
         this.setNewCurrentNode = this.setNewCurrentNode.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
+        //set the story and pull the first node
+        this.setState({story: this.pullStory()});
         this.setNewCurrentNode(this.state.story.firstNodeId);
     }
+
+    pullStory = async () => {
+        try {
+            const res = await fetch(`/api/stories/${this.props.storyId}`);
+            return await res.json();
+        }
+        catch (err) {
+            return console.log(err);
+        }
+    }
+
     //to be refactored with fetch when connecting back end
     findNodeById(nodeId) {
         return this.state.storyNodes.find(node => node._id === nodeId);

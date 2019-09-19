@@ -8,7 +8,7 @@ const storyRouter = express.Router();
 storyRouter.route('/')
   .get( (req, res) => {
     storyApi.getStories()
-      .then(stories => {console.log(stories); return res.json(stories);})
+      .then(stories => res.json(stories))
       .catch(err => next(err))
   })
   .post( (req, res) => {
