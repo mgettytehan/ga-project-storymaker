@@ -13,13 +13,18 @@ const createStory = async (story) => {
         title,
         firstNodeId: storyNode[0]._id.toString()
     });
+    await storyNodeApi(storyNode._id, {storyId : newStory._id});
     return newStory;
 }
 
-const getStoryNodes = async (storyId) => {
-    
+const getAllStorysNodes = async (storyId) => {
+    const allNodes = await storyNodeApi.getStoryNodeByStoryId(storyId);
+    return allNodes.reduce( (nodesObj, node) =>
+        { nodesObj[node._id] = node; return nodesObj; }
+        ,{});
 }
 
 module.exports = {
-    createStory
+    createStory,
+    getAllStorysNodes
 }

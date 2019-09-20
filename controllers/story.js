@@ -31,6 +31,11 @@ storyRouter.route('/:storyId')
   });
 
 storyRouter.route('/:storyId/storynodes/')
+  .get( (req, res, next) => {
+    storyManagementApi.getAllStorysNodes(req.params.storyId)
+    .then(allNodes => res.json(allNodes))
+    .catch(err => next(err));
+  })
   .post( (req, res, next) => {
     const newStoryNode = {...req.body, storyId: req.params.storyId}
     storyNodeApi.addStoryNodes(newStoryNode)

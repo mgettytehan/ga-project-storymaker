@@ -8,7 +8,8 @@ const ChoiceSchema = new mongoose.Schema({
 const StoryNodeSchema = new mongoose.Schema({
   nodeTitle: String,
   storyText: String,
-  choices: [ChoiceSchema]
+  choices: [ChoiceSchema],
+  storyId: mongoose.Schema.Types.ObjectId
 });
 
 StoryNodeCollection = mongoose.model('StoryNode', StoryNodeSchema)
@@ -18,10 +19,13 @@ const addStoryNodes = (storyNodes) => StoryNodeCollection.insertMany(storyNodes)
 
 const getStoryNodeById = (storyNodeId) => StoryNodeCollection.findById(storyNodeId);
 
+const getStoryNodeByStoryId = (storyId) => StoryNodeCollection.find({storyId});
+
 const updateStoryNode = (storyNodeId, storyNode) => StoryNodeCollection.findByIdAndUpdate(storyNodeId, storyNode);
 
 module.exports = {
   addStoryNodes,
   getStoryNodeById,
+  getStoryNodeByStoryId,
   updateStoryNode
 }
