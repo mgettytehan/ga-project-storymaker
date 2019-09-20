@@ -29,53 +29,25 @@ export default class StoryDisplay extends Component {
     //storyNodes will not exist when DB is connected
     state = {
         story: {},
-        currentNode: {},
-        storyNodes: [
-            {
-                _id: "test123",
-                nodeTitle: "The Start",
-                storyText: "And so it begins.",
-                choices: [
-                    {
-                        choiceText: "Fly the Excalibur",
-                        nextNode: "test124"
-                    },
-                    {
-                        choiceText: "Give up on curing the Drakh plague",
-                        nextNode: "test125"
-                    }
-                ]
-            },
-            {
-                _id: "test124",
-                nodeTitle: "OK End",
-                storyText: "You fly around space for a while until your show gets cancelled.\nOh well.\nThe End.",
-                choices: []
-            },
-            {
-                _id: "test125",
-                nodeTitle: "Bad End",
-                storyText: "Heartless. The Drakh plague wipes out everyone on Earth.\nThe End.",
-                choices: []
-            }
-        ]
+        currentNode: {}
     }
 
     constructor(props) {
         super(props);
         //set a dummy id as props
-        this.props.storyId = "5d7fd3f932aecfc147ec3785";
+        // this.props.storyId = "5d7fd3f932aecfc147ec3785";
         //bind setCurrentNode so it can be passed
         this.setNewCurrentNode = this.setNewCurrentNode.bind(this);
     }
 
     componentWillMount() {
         //set the story and pull the first node
-        this.pullStoryAndFirstNode().then(newState => this.setState(newState));
+        this.pullStoryAndFirstNode(this.props.match.params.storyId)
+        .then(newState => this.setState(newState));
     }
 
-    pullStoryAndFirstNode = () => {
-        return fetch(`/api/stories/${this.props.storyId}`)
+    pullStoryAndFirstNode = (storyId) => {
+        return fetch(`/api/stories/${storyId}`)
         .then(res => res.json())
         .then(story => {
             return fetch(`/api/stories/${story._id}/storynodes/${story.firstNodeId}`)
@@ -87,9 +59,8 @@ export default class StoryDisplay extends Component {
     }
     pull
 
-    //to be refactored with fetch when connecting back end
     findNodeById = (nodeId) => {
-        return fetch(`/api/stories/${this.props.storyId}/storynodes/${nodeId}`)
+        return fetch(`/api/stories/${this.props.match.params.storyId}/storynodes/${nodeId}`)
         .then(res => res.json())
         .catch(err => console.log(err));
     }
