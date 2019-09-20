@@ -26,21 +26,14 @@ const nodeCard = (node, changeNodeHandler) =>
 const nodeDisplay = (storyNodes, changeNodeHandler) =>
     (
         <div>
-            {storyNodes.map(node => nodeCard(node, changeNodeHandler))}
+            {Object.keys(storyNodes)
+                .map(id => nodeCard(storyNodes[id], changeNodeHandler))}
         </div>
     );
 
 class NodeEditor extends Component {
     state = {
-        node: {
-            nodeTitle : "Title",
-            storyText : "Story Text",
-            choices : []
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({node: nextProps.currentNode});
+        node: this.props.currentNode
     }
 
     componentWillMount() {
@@ -73,70 +66,48 @@ export default class StoryCreator extends Component {
     //state is all dummy data
     //keys will be the same when loading from db
     state = {
-        story: {
-            title: "Hardcoded Test Story",
-            firstNodeId: "test123"
-        },
+        story: {},
         currentNode: {},
-        storyNodes: [
-            {
-                _id: "test123",
-                nodeTitle: "The Start",
-                storyText: "And so it begins.",
-                choices: [
-                    {
-                        choiceText: "Fly the Excalibur",
-                        nextNode: "test124"
-                    },
-                    {
-                        choiceText: "Give up on curing the Drakh plague",
-                        nextNode: "test125"
-                    }
-                ]
-            },
-            {
-                _id: "test124",
-                nodeTitle: "OK End",
-                storyText: "You fly around space for a while until your show gets cancelled.\nOh well.\nThe End.",
-                choices: []
-            },
-            {
-                _id: "test125",
-                nodeTitle: "Bad End",
-                storyText: "Heartless. The Drakh plague wipes out everyone on Earth.\nThe End.",
-                choices: []
-            }
-        ]
+        storyNodes: {}
     }
 
     //may be able to remove once db integrated
     constructor(props) {
         super(props);
-        //bind setCurrentNode so it can be passed
+        //bind updateCurrentNode so it can be passed
         this.updateCurrentNode = this.updateCurrentNode.bind(this);
     }
 
     componentWillMount() {
-        this.setNewCurrentNode(this.state.story.firstNodeId);
+        this.getStoryAndAllNodes(this.props.match.params.storyId)
+            .then(result => {
+                this.setState(result);
+                this.changeCurrentNode(result.story.firstNodeId);
+            })
+            .catch(err => console.log(err));
     }
+    //TODO: improve this
+    getStoryAndAllNodes = (storyId) =>
+        fetch(`/api/stories/${storyId}`)
+        .then(res => res.json())
+        .then(story => 
+            fetch(`/api/stories/${storyId}/storynodes`)
+            .then(res => res.json())
+            .then(storyNodes => {
+                return ({ story, storyNodes })})
+        )
+        .catch(err => console.log(err));
+
     //will change a lot when db integrated
     updateCurrentNode = (updatedNode) => {
-        const nodes = [...this.state.storyNodes];
-        const newNodes = nodes.map(node => node._id === updatedNode._id ? updatedNode : node);
-        this.setState({storyNodes: newNodes});
+        // const nodes = [...this.state.storyNodes];
+        // const newNodes = nodes.map(node => node._id === updatedNode._id ? updatedNode : node);
+        // this.setState({storyNodes: newNodes});
     }
 
     changeCurrentNode = (nodeId) => {
-        const currentNode = this.findNodeById(nodeId);
+        const currentNode = this.state.storyNodes[nodeId];
         this.setState({currentNode});
-    }
-
-    findNodeById = (nodeId) => {
-        return this.state.storyNodes.find(node => node._id === nodeId);
-    }
-
-    setNewCurrentNode = (nodeId) => {
-        this.setState({currentNode: this.findNodeById(nodeId)});
     }
 
     render() {
