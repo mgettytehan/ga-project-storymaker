@@ -12,12 +12,14 @@ const choiceSet = (choice, handler, nodeList) => {
     );
 }
 
-const choiceEditor = (choices, nodeList, handler) => {
+const choiceEditor = (choices = [], nodeList = []) => {
     //placeholder for testing
     return (
         <div>
-            <span>Links: </span>
-            <p>choice.map</p>
+            <p>Choices: </p>
+            <p>{choices ? choices.map(choice => choice.choiceText + " " + choice.nextNode) : "No choices"}</p>
+            <p>Node List: </p>
+            <p>{nodeList ? nodeList.map(node => node._id + " " + node.nodeTitle) : "Nothing to list"}</p>
             {/* {choices.map((choice) => choiceSet(choice, handler, nodeList))} */}
         </div>
     );
@@ -68,11 +70,10 @@ class NodeEditor extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({node: nextProps.currentNode});
     }
-
+    //rewrite
     handleChoicesChange = (evnt) => {
         const node = {...this.state.node};
-        const newChoices = node.choices.map()
-        [evnt.target.name] = evnt.target.value;
+        node[evnt.target.name] = evnt.target.value;
         this.setState({node});
     }
 
@@ -92,7 +93,7 @@ class NodeEditor extends Component {
             <form onSubmit={this.handleSave}>
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
-                {/* {choiceEditor(this.node.choices, this.props.nodeList, this.handleChoicesChange)} */}
+                {choiceEditor(this.state.node.choices, this.props.nodeList)}
                 <button type="submit">Save</button>
             </form>
         );
