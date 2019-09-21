@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const storyLink = (choice, changeCurrentNode) => {
     //current contains dummy link instead of choice action
-    return (<button onClick={() => changeCurrentNode(choice.nextNode)}>{choice.choiceText}</button>);
+    return (<button className="story-link" onClick={() => changeCurrentNode(choice.nextNode)}>{choice.choiceText}</button>);
 }
 
 const storyText = (text) => {
@@ -12,7 +12,7 @@ const storyText = (text) => {
 const storyTextDisplay = (currentNode, changeCurrentNode) => {
     //'no choices option is placeholder
     return (
-        <div>
+        <div className="story-display">
             {currentNode.storyText ? storyText(currentNode.storyText) : ""}
             {currentNode.choices ? currentNode.choices.map(choice => storyLink(choice, changeCurrentNode)) : "No choices"}
         </div>

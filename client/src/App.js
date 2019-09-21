@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import StoryDisplay from './components/StoryDisplay.js';
 import StoryCreator from './components/StoryCreator.js';
 import NewStory from './components/NewStory.js';
-import './App.css';
+// import './App.css';
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
       <header>
           <div>[Logo]</div>
       </header>
+      <main>
       <Router>
         <Switch>
         <Route path="/story/:storyId/edit" component={StoryCreator}/>
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/" component={NewStory} />
         </Switch>
       </Router>
+      </main>
     </div>
   );
 }
