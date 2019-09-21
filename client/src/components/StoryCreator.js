@@ -1,6 +1,27 @@
 import React, { Component } from 'react';
 
 //textField, editArea and the choice values are loaded in from NodeEditor's 'node'
+const choiceSet = (choice, handler, nodeList) => {
+    return (
+        <div>
+            <input name="choiceText" value={choice.choiceText} onChange={handler} />
+            <select name="nextNode" selected={choice.storyId} onChange={handler}>
+                {nodeList.map(node => (<option value={nodeList._id}>{node.nodeTitle}</option>))}
+            </select>
+        </div>
+    );
+}
+
+const choiceEditor = (choices, nodeList, handler) => {
+    //placeholder for testing
+    return (
+        <div>
+            <span>Links: </span>
+            <p>choice.map</p>
+            {/* {choices.map((choice) => choiceSet(choice, handler, nodeList))} */}
+        </div>
+    );
+}
 
 const textField = (name, value, handler, label = "Title") => (
     <div>
@@ -12,11 +33,11 @@ const textField = (name, value, handler, label = "Title") => (
 const editArea = (name, value, handler) => (<textarea name={name} onChange={handler} value={value}></textarea>);
 
 //TODO: eventually list linked node titles instead of choice text
-const choiceList = (choice) => (<span>{choice.choiceText} </span>);
+const choiceList = (choice) => (<span className="node-editor-link">{choice.choiceText} </span>);
 
 const nodeCard = (node, changeNodeHandler) => 
     (
-        <div>
+        <div className="node-card">
             <button onClick={() => changeNodeHandler(node._id)}>Edit</button>
             <p>{node.nodeTitle}</p>
             <p>Links: {node.choices && node.choices.length ? node.choices.map(choice => choiceList(choice)) : "End"}</p>
@@ -25,7 +46,7 @@ const nodeCard = (node, changeNodeHandler) =>
 
 const nodeDisplay = (storyNodes, changeNodeHandler) =>
     (
-        <div>
+        <div className="node-display">
             {Object.keys(storyNodes)
                 .map(id => nodeCard(storyNodes[id], changeNodeHandler))}
         </div>
@@ -48,10 +69,17 @@ class NodeEditor extends Component {
         this.setState({node: nextProps.currentNode});
     }
 
+    handleChoicesChange = (evnt) => {
+        const node = {...this.state.node};
+        const newChoices = node.choices.map()
+        [evnt.target.name] = evnt.target.value;
+        this.setState({node});
+    }
+
     handleChange = (evnt) => {
         const node = {...this.state.node};
         node[evnt.target.name] = evnt.target.value;
-        this.setState({node})
+        this.setState({node});
     }
 
     handleSave = (evnt) => {
@@ -64,6 +92,7 @@ class NodeEditor extends Component {
             <form onSubmit={this.handleSave}>
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
+                {/* {choiceEditor(this.node.choices, this.props.nodeList, this.handleChoicesChange)} */}
                 <button type="submit">Save</button>
             </form>
         );
@@ -133,10 +162,38 @@ export default class StoryCreator extends Component {
         this.setState({currentNode});
     }
 
+    createNewNode = () => {
+        fetch(`/api/stories/${this.state.story._id}/storynodes`, {
+            method: 'POST',
+            body: JSON.stringify({
+                nodeTitle: "Untitled Node",
+                storyText: "",
+                choices: [],
+                storyId: this.state.story._id}),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(newNode => {
+            const nodes = {...this.state.storyNodes}
+            nodes[newNode._id] = newNode;
+            this.setState({
+                storyNodes: nodes,
+                currentNode: newNode
+            })
+        })
+        .catch(err => console.log(err));
+    }
+
+    createNodeList = (nodes) => {
+        return Object.keys(nodes)
+                .map(id => ({_id: nodes[id]._id, nodeTitle: nodes[id].nodeTitle}));
+    }
+
     render() {
         return (
             <div>
-                <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} />
+                <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} nodeList={this.createNodeList(this.state.storyNodes)} />
+                <button onClick={this.createNewNode}>Add Node</button>
                 {nodeDisplay(this.state.storyNodes, this.changeCurrentNode)}
             </div>
         );
