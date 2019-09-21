@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-const saveButton = (handler, text = "Save") => (<input type="submit" value={text} onClick={handler} />);
-//textField and editArea's values are loaded in from NodeEditor's 'node'
+//textField, editArea and the choice values are loaded in from NodeEditor's 'node'
+
 const textField = (name, value, handler, label = "Title") => (
     <div>
         <label>{label}</label>
@@ -19,7 +19,7 @@ const nodeCard = (node, changeNodeHandler) =>
         <div>
             <button onClick={() => changeNodeHandler(node._id)}>Edit</button>
             <p>{node.nodeTitle}</p>
-            <p>Links: {node.choices.length ? node.choices.map(choice => choiceList(choice)) : "End"}</p>
+            <p>Links: {node.choices && node.choices.length ? node.choices.map(choice => choiceList(choice)) : "End"}</p>
         </div>
     );
 
@@ -33,11 +33,19 @@ const nodeDisplay = (storyNodes, changeNodeHandler) =>
 
 class NodeEditor extends Component {
     state = {
-        node: this.props.currentNode
+        node: {
+            nodeTitle: "",
+            storyText: "",
+            choices: []
+        }
     }
 
     componentWillMount() {
         this.setState({node: this.props.currentNode});
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({node: nextProps.currentNode});
     }
 
     handleChange = (evnt) => {
@@ -53,18 +61,17 @@ class NodeEditor extends Component {
 
     render() {
         return(
-            <form>
+            <form onSubmit={this.handleSave}>
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
-                {saveButton(this.handleSave)}
+                <button type="submit">Save</button>
             </form>
         );
     }
 }
 
 export default class StoryCreator extends Component {
-    //state is all dummy data
-    //keys will be the same when loading from db
+    //may dispose of 'currentNode'
     state = {
         story: {},
         currentNode: {},
@@ -98,11 +105,27 @@ export default class StoryCreator extends Component {
         )
         .catch(err => console.log(err));
 
-    //will change a lot when db integrated
+    sendUpdatedNode = (updatedNode) => {
+        return fetch(`/api/stories/${updatedNode.storyId}/storynodes/${updatedNode._id}`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedNode),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err));
+    }
+
     updateCurrentNode = (updatedNode) => {
-        // const nodes = [...this.state.storyNodes];
-        // const newNodes = nodes.map(node => node._id === updatedNode._id ? updatedNode : node);
-        // this.setState({storyNodes: newNodes});
+        this.sendUpdatedNode(updatedNode)
+        .then(
+            result => {
+                const newNodes = {...this.state.storyNodes};
+                newNodes[result._id] = result;
+                this.setState({storyNodes: newNodes});
+                this.changeCurrentNode(result._id);
+            }
+        )
+        .catch(err => console.log(err))
     }
 
     changeCurrentNode = (nodeId) => {
