@@ -8,10 +8,23 @@ export default class Login extends Component {
         }
     }
 
+    registerUser = user => {
+        fetch('/api/authors', {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(
+            f => f
+            //to fill in
+        )
+        .catch(err => console.log(err));
+    }
+
     handleChange = evnt => {
         const author = {...this.state.author};
         author[evnt.target.name] = evnt.target.value;
-        this.setState(author);
+        this.setState({author});
     }
 
     handleSubmit = () => {
