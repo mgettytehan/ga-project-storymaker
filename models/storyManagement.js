@@ -13,8 +13,8 @@ const createStory = async (story) => {
         title,
         firstNodeId: storyNode[0]._id.toString()
     });
-    await storyNodeApi.updateStoryNode(storyNode._id, {storyId : newStory._id});
-    return newStory;
+    await storyNodeApi.updateStoryNode(storyNode[0]._id, {storyId : newStory[0]._id});
+    return newStory[0];
 }
 
 const getAllStorysNodes = async (storyId) => {
