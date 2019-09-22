@@ -5,8 +5,9 @@ const storyLink = (choice, changeCurrentNode) => {
     return (<button className="story-link" onClick={() => changeCurrentNode(choice.nextNode)}>{choice.choiceText}</button>);
 }
 
+//rework when introducing improved text editing
 const storyText = (text) => {
-    return (<p>{text}</p>);
+    return (<p dangerouslySetInnerHTML={{ __html: text }}></p>);
 }
 
 const storyTextDisplay = (currentNode, changeCurrentNode) => {
@@ -43,7 +44,9 @@ export default class StoryDisplay extends Component {
     componentWillMount() {
         //set the story and pull the first node
         this.pullStoryAndFirstNode(this.props.match.params.storyId)
-        .then(newState => this.setState(newState));
+        .then(newState => {
+            this.setState(newState);
+        });
     }
 
     pullStoryAndFirstNode = (storyId) => {
@@ -57,7 +60,6 @@ export default class StoryDisplay extends Component {
         })
         .catch(err => console.log(err));
     }
-    pull
 
     findNodeById = (nodeId) => {
         return fetch(`/api/stories/${this.props.match.params.storyId}/storynodes/${nodeId}`)
@@ -65,15 +67,25 @@ export default class StoryDisplay extends Component {
         .catch(err => console.log(err));
     }
 
+    convertLinebreaks = storyText => {
+        return storyText.replace(/\n/g, "<br />");
+    }
+
+    //add line breaks when setting
     setNewCurrentNode = (nodeId) => {
-        this.findNodeById(nodeId).then(currentNode => this.setState({currentNode}));
+        this.findNodeById(nodeId).then(currentNode => {
+            this.setState({currentNode});
+        });
     }
 
     render() {
+        const currentNode = {...this.state.currentNode};
+        if(currentNode.storyText)
+            currentNode.storyText = this.convertLinebreaks(currentNode.storyText);
         return (
             <div>
                 {storyDetails( this.state.story.title )}
-                {this.state.currentNode ? storyTextDisplay( this.state.currentNode, this.setNewCurrentNode) : "We lost the story..." }
+                {currentNode ? storyTextDisplay( currentNode, this.setNewCurrentNode) : "We lost the story..." }
             </div>
         );
     }

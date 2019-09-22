@@ -61,7 +61,13 @@ class NodeEditor extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({node: nextProps.currentNode});
+        this.setState({node : nextProps.currentNode});
+    }
+
+    handleEditorChange = (storyText) => {
+        const node = {...this.state.node}
+        node.storyText = storyText;
+        this.setState({node});
     }
 
     handleChoicesChange = (evnt) => {
@@ -84,17 +90,16 @@ class NodeEditor extends Component {
     addChoice = () => {
         const node = {...this.state.node};
         node.choices.push({choiceText: "New choice", nextNode: ""});
-        console.log(node);
         this.setState({node});
     }
 
     render() {
-        if (!this.state.node)
+        if (Object.entries(this.state.node).length === 0)
             return (<div>Nothing selected for editing.</div>)
         return(
             <form onSubmit={this.handleSave}>
-                {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
+                {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange)}
                 <button type="button" onClick={this.addChoice}>Add Choice</button>
                 <button type="submit">Save</button>
