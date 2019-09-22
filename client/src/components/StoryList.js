@@ -21,12 +21,16 @@ const listDisplay = (allStories = [], linkHandler = f=>f) => {
 
 export default class StoryList extends Component {
     state = {
-        allStories: []
+        searchbar: "",
+        matchingStories: [],
+        allStories: [],
     }
 
     componentWillMount() {
         this.getAllStories()
-            .then(stories => this.setState({allStories: stories}))
+            .then(stories => this.setState(
+                {allStories: stories, matchingStories: stories}
+            ))
             .catch(err => console.log(err));
     }
 
@@ -40,11 +44,26 @@ export default class StoryList extends Component {
         this.props.history.push(`/story/${evnt.target.getAttribute("id")}`)
     }
 
+    findSearchResults = searchString => {
+        return this.state.allStories
+            .filter(
+                story =>
+                    story.title ? story.title.toLowerCase().includes(searchString.toLowerCase()) : false
+            );
+    }
+
+    handleSearchChange = evnt => {
+        const value = evnt.target.value;
+        this.setState({searchbar: value});
+        this.setState({matchingStories: this.findSearchResults(value)});
+    }
+
     render() {
         return(
             <div>
                 <h1>All Stories</h1>
-                {listDisplay(this.state.allStories, this.linkToStory)}
+                <input type="text" onChange={this.handleSearchChange}/>
+                {listDisplay(this.state.matchingStories, this.linkToStory)}
             </div>
         );
     }
