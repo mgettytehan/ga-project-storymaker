@@ -6,6 +6,7 @@ const choiceSet = (choice, index, nodeList, handler) => {
         <div>
             <input name="choiceText" data-index={index} value={choice.choiceText} onChange={handler} />
             <select name="nextNode" data-index={index} value={choice.nextNode} onChange={handler}>
+                <option></option>
                 {nodeList ? nodeList.map(node => (<option value={node._id}>{node.nodeTitle}</option>)) : "No options available"}
             </select>
         </div>
@@ -80,12 +81,20 @@ class NodeEditor extends Component {
         this.props.updateCurrentNode(this.state.node);
     }
 
+    addChoice = () => {
+        const node = {...this.state.node};
+        node.choices.push({choiceText: "New choice", nextNode: ""});
+        console.log(node);
+        this.setState({node});
+    }
+
     render() {
         return(
             <form onSubmit={this.handleSave}>
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
                 {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange)}
+                <button type="button" onClick={this.addChoice}>Add Choice</button>
                 <button type="submit">Save</button>
             </form>
         );
@@ -187,6 +196,7 @@ export default class StoryCreator extends Component {
             <div>
                 <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} nodeList={this.createNodeList(this.state.storyNodes)} />
                 <button onClick={this.createNewNode}>Add Node</button>
+                
                 {nodeDisplay(this.state.storyNodes, this.changeCurrentNode)}
             </div>
         );
