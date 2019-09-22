@@ -1,28 +1,20 @@
 import React, { Component } from 'react';
 
 //textField, editArea and the choice values are loaded in from NodeEditor's 'node'
-const choiceSet = (choice, handler, nodeList) => {
+const choiceSet = (choice, index, nodeList, handler) => {
     return (
         <div>
-            <input name="choiceText" value={choice.choiceText} onChange={handler} />
-            <select name="nextNode" selected={choice.storyId} onChange={handler}>
-                {nodeList.map(node => (<option value={nodeList._id}>{node.nodeTitle}</option>))}
+            <input name="choiceText" data-index={index} value={choice.choiceText} onChange={handler} />
+            <select name="nextNode" data-index={index} value={choice.nextNode} onChange={handler}>
+                {nodeList ? nodeList.map(node => (<option value={node._id}>{node.nodeTitle}</option>)) : "No options available"}
             </select>
         </div>
     );
 }
 
-const choiceEditor = (choices = [], nodeList = []) => {
+const choiceEditor = (choices = [], nodeList = [], handler = f=>f) => {
     //placeholder for testing
-    return (
-        <div>
-            <p>Choices: </p>
-            <p>{choices ? choices.map(choice => choice.choiceText + " " + choice.nextNode) : "No choices"}</p>
-            <p>Node List: </p>
-            <p>{nodeList ? nodeList.map(node => node._id + " " + node.nodeTitle) : "Nothing to list"}</p>
-            {/* {choices.map((choice) => choiceSet(choice, handler, nodeList))} */}
-        </div>
-    );
+    return choices.map((choice, index) => choiceSet(choice, index, nodeList, handler));
 }
 
 const textField = (name, value, handler, label = "Title") => (
@@ -70,10 +62,10 @@ class NodeEditor extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({node: nextProps.currentNode});
     }
-    //rewrite
+
     handleChoicesChange = (evnt) => {
         const node = {...this.state.node};
-        node[evnt.target.name] = evnt.target.value;
+        node.choices[evnt.target.dataset.index][evnt.target.name] = evnt.target.value;
         this.setState({node});
     }
 
@@ -93,7 +85,7 @@ class NodeEditor extends Component {
             <form onSubmit={this.handleSave}>
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
-                {choiceEditor(this.state.node.choices, this.props.nodeList)}
+                {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange)}
                 <button type="submit">Save</button>
             </form>
         );
