@@ -89,6 +89,8 @@ class NodeEditor extends Component {
     }
 
     render() {
+        if (!this.state.node)
+            return (<div>Nothing selected for editing.</div>)
         return(
             <form onSubmit={this.handleSave}>
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
@@ -194,6 +196,7 @@ export default class StoryCreator extends Component {
     render() {
         return (
             <div>
+                <h1>{this.state.story.title ? this.state.story.title : "No Title"}</h1>
                 <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} nodeList={this.createNodeList(this.state.storyNodes)} />
                 <button onClick={this.createNewNode}>Add Node</button>
                 

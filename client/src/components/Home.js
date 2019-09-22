@@ -23,7 +23,7 @@ class Home extends Component {
         .then(
             //go to new story edit page when save is successful
             newStory => {
-                this.props.history.push(`/story/${newStory[0]._id}/edit`)
+                this.props.history.push(`/story/${newStory._id}/edit`)
             }
         )
         .catch(
@@ -39,7 +39,7 @@ class Home extends Component {
         return (
         <div>
             <h1>Story Tree</h1>
-            <p>An application for creating and sharing branching stories.</p>
+            <p>A web application for creating and sharing branching stories.</p>
             <form>
                 <label>Story title:</label>
                 <input type="text" name="title" onChange={this.handleTitleChange} required/>
