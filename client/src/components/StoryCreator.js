@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
 //textField, editArea and the choice values are loaded in from NodeEditor's 'node'
-const choiceSet = (choice, index, nodeList, handler) => {
+const choiceSet = (choice, index, nodeList, changeHandler, deleteHandler) => {
     return (
         <div>
-            <input name="choiceText" data-index={index} value={choice.choiceText} onChange={handler} />
-            <select name="nextNode" data-index={index} value={choice.nextNode} onChange={handler}>
+            <button data-index={index} onClick={deleteHandler}>X</button>
+            <input name="choiceText" data-index={index} value={choice.choiceText} onChange={changeHandler} />
+            <select name="nextNode" data-index={index} value={choice.nextNode} onChange={changeHandler}>
                 <option></option>
                 {nodeList ? nodeList.map(node => (<option value={node._id}>{node.nodeTitle}</option>)) : "No options available"}
             </select>
@@ -13,9 +14,9 @@ const choiceSet = (choice, index, nodeList, handler) => {
     );
 }
 
-const choiceEditor = (choices = [], nodeList = [], handler = f=>f) => {
+const choiceEditor = (choices = [], nodeList = [], changeHandler = f=>f, deleteHandler = f=>f) => {
     //placeholder for testing
-    return choices.map((choice, index) => choiceSet(choice, index, nodeList, handler));
+    return choices.map((choice, index) => choiceSet(choice, index, nodeList, changeHandler, deleteHandler));
 }
 
 const textField = (name, value, handler, label = "Title") => (
@@ -64,10 +65,11 @@ class NodeEditor extends Component {
         this.setState({node : nextProps.currentNode});
     }
 
-    handleEditorChange = (storyText) => {
+    handleChoicesRemove = (evnt) => {
         const node = {...this.state.node}
-        node.storyText = storyText;
-        this.setState({node});
+        const index = evnt.target.dataset.index;
+        node.choices.splice(index, 1);
+        this.setState(node);
     }
 
     handleChoicesChange = (evnt) => {
@@ -100,7 +102,7 @@ class NodeEditor extends Component {
             <form onSubmit={this.handleSave}>
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
-                {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange)}
+                {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange, this.handleChoicesRemove)}
                 <button type="button" onClick={this.addChoice}>Add Choice</button>
                 <button type="submit">Save</button>
             </form>

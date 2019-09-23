@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <header>
-          <div class="logo"><Link to="/">StoryTree</Link></div>
+          <div className="logo"><Link to="/">StoryTree</Link></div>
       </header>
         <main>
           <Switch>
