@@ -1,7 +1,7 @@
 const mongoose = require('./connection.js');
 
 const AuthorSchema = new mongoose.Schema({
-  userName: String,
+  username: String,
   password: String
 });
 
@@ -12,8 +12,8 @@ const getAuthors = () => AuthorCollection.find();
 const addAuthors = (authors) => AuthorCollection.insertMany(authors);
 
 const getAuthor = (authorId) => AuthorCollection.findById(authorId);
-
-const getAuthorByName = (userName) => AuthorCollection.find({userName});
+//case insensitive search
+const getAuthorByName = (username) => AuthorCollection.findOne({username : { $regex : new RegExp(username, "i") }});
 
 module.exports = {
   addAuthors,
