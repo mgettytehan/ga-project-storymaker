@@ -26,6 +26,9 @@ authorRouter.route('/login')
     });
 
 authorRouter.route('/logout')
+    .get( (req, res) => {
+        res.clearCookie('storyauthor', {httpOnly: false})
+    })
     
 
 module.exports = {
