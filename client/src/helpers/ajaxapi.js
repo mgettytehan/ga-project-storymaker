@@ -5,7 +5,9 @@ const getAllStories = async () => {
 }
 
 const saveStory = async (story) => {
-    return fetch(`/api/stories/${story._id}`, {
+    const id = story._id;
+    story._id = undefined;
+    return fetch(`/api/stories/${id}`, {
         method: 'PUT',
         body: JSON.stringify(story),
         headers: { 'Content-Type': 'application/json' }
