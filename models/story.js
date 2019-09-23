@@ -2,7 +2,9 @@ const mongoose = require('./connection.js');
 
 const StorySchema = new mongoose.Schema({
   title: String,
-  firstNodeId: mongoose.Schema.Types.ObjectId
+  summary: String,
+  firstNodeId: mongoose.Schema.Types.ObjectId,
+  authorId: mongoose.Schema.Types.ObjectId
 });
 
 StoryCollection = mongoose.model('Story', StorySchema)
