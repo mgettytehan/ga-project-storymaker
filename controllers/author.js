@@ -5,23 +5,28 @@ const authorManagementApi = require('../models/authorManagement.js');
 const authorRouter = express.Router();
 
 authorRouter.route('/register')
-    .post( (req, res) => {
+    .post( (req, res, next) => {
         authorManagementApi.registerUser(req.body)
             .then(author => author ? res.send(author) : res.sendStatus(400))
-            .catch(err => console.log(err));
+            .catch(err => next(err));
     });
 
 authorRouter.route('/login')
-    .get( (req, res) => {
+    .get( (req, res, next) => {
         authorManagementApi.validateUser(req.body)
             .then( result => {
-                if (result.result)
-                    res.cookie('storyauthor', result.authorId);
+                if (result.result) {
+                    res.cookie('storyauthor', result.authorId.toString(), {httpOnly: false, maxAge: 9000})
+                    .sendStatus(200);
+                }
                 else
                     res.send(400);
             })
-            .catch(err => console.log(err))
+            .catch(err => next(err))
     });
+
+authorRouter.route('/logout')
+    
 
 module.exports = {
     authorRouter
