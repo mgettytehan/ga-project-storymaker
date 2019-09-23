@@ -4,9 +4,9 @@ const authorManagementApi = require('../models/authorManagement.js');
 
 const authorRouter = express.Router();
 
-authorRouter.route('/')
+authorRouter.route('/register')
     .post( (req, res) => {
-        authorManagementApi.registerUser(req.body.username)
+        authorManagementApi.registerUser(req.body)
             .then(author => author ? res.send(author) : res.sendStatus(400))
             .catch(err => console.log(err));
     });

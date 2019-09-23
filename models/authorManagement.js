@@ -1,11 +1,12 @@
 const authorApi = require('./author.js');
 
 const registerUser = async (author) => {
-    const author = await authorApi.getAuthorByName({username: author.username});
-    if (author)
+    const checkAuthor = await authorApi.getAuthorByName(author.username);
+    if (checkAuthor) {
         return false;
+    }
     else {
-        newAuthor = authorApi.addAuthors(author);
+        newAuthor = await authorApi.addAuthors(author);
         return newAuthor[0];
     }
 }
