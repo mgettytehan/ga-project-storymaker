@@ -21,7 +21,7 @@ const getStoryNodeById = (storyNodeId) => StoryNodeCollection.findById(storyNode
 
 const getStoryNodeByStoryId = (storyId) => StoryNodeCollection.find({storyId});
 
-const updateStoryNode = (storyNodeId, storyNode) => StoryNodeCollection.findByIdAndUpdate(storyNodeId, storyNode);
+const updateStoryNode = (storyNodeId, storyNode) => StoryNodeCollection.findByIdAndUpdate(storyNodeId, storyNode, {new:true});
 
 module.exports = {
   addStoryNodes,

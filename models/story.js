@@ -16,7 +16,7 @@ const addStories = (stories) => StoryCollection.insertMany(stories);
 
 const getStory = (storyId) => StoryCollection.findById(storyId);
 
-const updateStory = (storyId, story) => StoryCollection.findByIdAndUpdate(storyId, story);
+const updateStory = (storyId, story) => StoryCollection.findByIdAndUpdate(storyId, story, {new:true});
 
 module.exports = {
   addStories,
