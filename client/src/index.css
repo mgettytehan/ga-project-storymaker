@@ -44,7 +44,11 @@ button, input[type=submit] {
   border-radius: 3px;
 }
 
-input, textarea, button {
+textarea {
+  white-space: pre-line;
+}
+
+input, textarea, button, select, option {
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
   border-radius: 3px;

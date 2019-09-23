@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+const resetButton = (resetHandler) => {
+    return (<button onClick={resetHandler}>Reset</button>);
+}
+
 const storyLink = (choice, changeCurrentNode) => {
     //current contains dummy link instead of choice action
     return (<button className="story-link" onClick={() => changeCurrentNode(choice.nextNode)}>{choice.choiceText}</button>);
@@ -26,8 +30,7 @@ const storyDetails = (storyTitle) => {
 }
 
 export default class StoryDisplay extends Component {
-    //state hardcoded for testing
-    //storyNodes will not exist when DB is connected
+
     state = {
         story: {},
         currentNode: {}
@@ -35,8 +38,6 @@ export default class StoryDisplay extends Component {
 
     constructor(props) {
         super(props);
-        //set a dummy id as props
-        // this.props.storyId = "5d7fd3f932aecfc147ec3785";
         //bind setCurrentNode so it can be passed
         this.setNewCurrentNode = this.setNewCurrentNode.bind(this);
     }
@@ -71,7 +72,10 @@ export default class StoryDisplay extends Component {
         return storyText.replace(/\n/g, "<br />");
     }
 
-    //add line breaks when setting
+    resetNode = () => {
+        this.setNewCurrentNode(this.state.story.firstNodeId);
+    }
+
     setNewCurrentNode = (nodeId) => {
         this.findNodeById(nodeId).then(currentNode => {
             this.setState({currentNode});
@@ -84,6 +88,7 @@ export default class StoryDisplay extends Component {
             currentNode.storyText = this.convertLinebreaks(currentNode.storyText);
         return (
             <div>
+                <div>{resetButton(this.resetNode)}</div>
                 {storyDetails( this.state.story.title )}
                 {currentNode ? storyTextDisplay( currentNode, this.setNewCurrentNode) : "We lost the story..." }
             </div>
