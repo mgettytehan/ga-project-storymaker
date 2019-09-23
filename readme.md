@@ -1,8 +1,8 @@
 # Story Tree
 
-[http://hidden-taiga-61254.herokuapp.com/}(Story Tree) is a web application for creating and sharing branching stories.
+[http://hidden-taiga-61254.herokuapp.com/](Story Tree) is a web application for creating and sharing branching stories.
 
-Project planning is conducted in (https://trello.com/b/56ArLGeq/ga-sei-project-3)(Trello).
+Project planning is conducted in [https://trello.com/b/56ArLGeq/ga-sei-project-3](Trello).
 
 ## Purpose
 A casual author without coding knowledge would like to write branching stories and share them with friends or publicly.
