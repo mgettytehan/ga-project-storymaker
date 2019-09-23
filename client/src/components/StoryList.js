@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { getAllStories } from '../helpers/ajaxapi.js';
 
 const storyCard = (story = {}, linkHandler = f=>f) => {
     return (
@@ -27,18 +28,13 @@ export default class StoryList extends Component {
     }
 
     componentWillMount() {
-        this.getAllStories()
+        getAllStories()
             .then(stories => this.setState(
                 {allStories: stories, matchingStories: stories}
             ))
             .catch(err => console.log(err));
     }
 
-    getAllStories = () => {
-        return fetch('/api/stories')
-            .then(res => res.json())
-            .catch(err => console.log(err))
-    }
     //go to clicked story
     linkToStory = evnt => {
         this.props.history.push(`/story/${evnt.target.getAttribute("id")}`)
