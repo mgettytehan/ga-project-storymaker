@@ -5,6 +5,7 @@ import Login from './components/Login.js';
 import StoryList from './components/StoryList.js';
 import StoryDisplay from './components/StoryDisplay.js';
 import StoryCreator from './components/StoryCreator.js';
+import StoryDash from './components/StoryDash.js';
 // import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/story/:storyId" component={StoryDisplay}/>
             <Route path="/stories" component={StoryList}/>
             <Route path="/login" component={Login} />
+            <Route path="/dash" component={StoryDash} />
             <Route exact path="/" component={Home} />
           </Switch>
         </main>
