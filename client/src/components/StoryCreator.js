@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 const choiceSet = (choice, index, nodeList, changeHandler, deleteHandler) => {
     return (
         <div>
-            <button data-index={index} onClick={deleteHandler}>X</button>
+            <button data-index={index} onClick={deleteHandler} className="close">X</button>
             <input name="choiceText" data-index={index} value={choice.choiceText} onChange={changeHandler} />
             <select name="nextNode" data-index={index} value={choice.nextNode} onChange={changeHandler}>
                 <option></option>
@@ -26,14 +26,14 @@ const textField = (name, value, handler, label = "Title") => (
     </div>
 );
 
-const editArea = (name, value, handler) => (<textarea name={name} onChange={handler} value={value}></textarea>);
+const editArea = (name, value, handler) => (<textarea className="big" name={name} onChange={handler} value={value}></textarea>);
 
 //TODO: eventually list linked node titles instead of choice text
 const choiceList = (choice) => (<span className="node-editor-link">{choice.choiceText} </span>);
 
 const nodeCard = (node, changeNodeHandler) => 
     (
-        <div className="node-card">
+        <div className="tile">
             <button onClick={() => changeNodeHandler(node._id)}>Edit</button>
             <p>{node.nodeTitle}</p>
             <p>Links: {node.choices && node.choices.length ? node.choices.map(choice => choiceList(choice)) : "End"}</p>
@@ -102,8 +102,8 @@ class NodeEditor extends Component {
             <form onSubmit={this.handleSave}>
                 {textField("nodeTitle", this.state.node.nodeTitle, this.handleChange)}
                 {editArea("storyText", this.state.node.storyText, this.handleChange)}
-                {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange, this.handleChoicesRemove)}
                 <button type="button" onClick={this.addChoice}>Add Choice</button>
+                {choiceEditor(this.state.node.choices, this.props.nodeList, this.handleChoicesChange, this.handleChoicesRemove)}
                 <button type="submit">Save</button>
             </form>
         );
@@ -205,8 +205,8 @@ export default class StoryCreator extends Component {
             <div>
                 <h1>{this.state.story.title ? this.state.story.title : "No Title"}</h1>
                 <NodeEditor currentNode={this.state.currentNode} updateCurrentNode={this.updateCurrentNode} nodeList={this.createNodeList(this.state.storyNodes)} />
-                <button onClick={this.createNewNode}>Add Node</button>
-                
+                <hr/>
+                <div className="left"><button onClick={this.createNewNode}>Add Node</button></div>
                 {nodeDisplay(this.state.storyNodes, this.changeCurrentNode)}
             </div>
         );
