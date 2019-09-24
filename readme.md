@@ -36,3 +36,14 @@ The 'story reader' wants to read a custom branching story. They have either arri
 
 ### ERD
 ![entity relationship diagram](https://github.com/mgettytehan/ga-project-storymaker/blob/master/readme-images/wireframes.JPG)
+
+## Future Updates
+
+A few features/bugs to address in the near future.
+
+- Finish basic (unsafe) authentication
+- (related to above) Individual dash
+- Method in model to attach author names to stories
+- Implement proper authentication
+- UI feedback for actions
+- Optional styles on story nodes/story overall
