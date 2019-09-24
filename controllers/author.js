@@ -12,7 +12,7 @@ authorRouter.route('/register')
     });
 
 authorRouter.route('/login')
-    .get( (req, res, next) => {
+    .post( (req, res, next) => {
         authorManagementApi.validateUser(req.body)
             .then( result => {
                 if (result.result) {
