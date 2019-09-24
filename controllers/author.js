@@ -20,7 +20,7 @@ authorRouter.route('/login')
                     .sendStatus(200);
                 }
                 else
-                    res.send(400);
+                    res.sendStatus(400);
             })
             .catch(err => next(err))
     });

@@ -19,7 +19,6 @@ export default class StoryDash extends Component {
     }
 
     componentWillMount() {
-        console.log(document.cookie);
         getAllStories()
             .then(stories => this.setState(
                 {allStories: stories}
