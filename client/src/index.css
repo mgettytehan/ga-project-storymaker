@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
+  text-align: center;
   margin: 0 auto;
   font-size: 16px;
   background-color: #05054A;
@@ -9,12 +10,9 @@ body {
   color: #FFFFFF;
 }
 
-body > * {
-  transition: 1s;
-}
-
 a {
   text-decoration: none;
+  color: #FFFFD2;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -27,11 +25,24 @@ main, header, footer {
   margin: 15px auto;
 }
 
+header, footer {
+  background-image: none;
+  background-color: #05054A;
+}
+
+header {
+  text-align: left;
+}
+
+footer {
+  text-align: right;
+}
+
 main {
   text-align: center;
   background-color: rgba(0, 0, 0, 0.2);
   padding: 20px;
-  min-height: 90vh;
+  min-height: 85vh;
 }
 
 button, input[type=submit] {
@@ -42,10 +53,7 @@ button, input[type=submit] {
   padding: 5px;
   margin: 5px;
   border-radius: 3px;
-}
-
-textarea {
-  white-space: pre-line;
+  cursor: pointer;
 }
 
 input, textarea, button, select, option {
@@ -58,15 +66,34 @@ input, textarea, button, select, option {
 }
 
 textarea {
+
+}
+
+textarea.big {
+  white-space: pre-line;
   width: 100em;
   height: 20em;
   max-width: 75vw;
   max-height: 100vh;
 }
 
+.mainpage-container {
+  display: flex;
+  margin: 0 25px;
+  justify-content: space-around;
+  font-size: 1.5em;
+}
+
 .logo {
   font-family: 'Merriweather', serif;
   padding: 15px;
+  color: #FFFFD2;
+  font-size: 1.2em;
+}
+
+.tile {
+  border: 3px solid rgba(255, 255, 210, 0.3);
+  padding: 10px;
 }
 
 .story-display {
@@ -90,12 +117,8 @@ textarea {
 .node-display {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: 1fr;
   gap: 10px;
-}
-
-.node-card {
-  border: 3px solid rgba(255, 255, 210, 0.3);
-  padding: 10px;
 }
 
 .node-editor-link {

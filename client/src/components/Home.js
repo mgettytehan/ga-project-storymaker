@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 class Home extends Component {
     state = {
@@ -40,6 +41,9 @@ class Home extends Component {
         <div>
             <h1>Story Tree</h1>
             <p>A web application for creating and sharing branching stories.</p>
+            <div className="mainpage-container">
+                <h1><Link to="/login">Login</Link></h1> <h1>or</h1> <h1><Link to="/stories">Browse</Link></h1>
+            </div>
             <form>
                 <label>Story title:</label>
                 <input type="text" name="title" onChange={this.handleTitleChange} required/>

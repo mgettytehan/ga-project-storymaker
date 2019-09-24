@@ -25,6 +25,9 @@ function App() {
             <Route exact path="/" component={Home} />
           </Switch>
         </main>
+        <footer>
+          2019
+        </footer>
       </BrowserRouter>
     </div>
   );
