@@ -70,6 +70,7 @@ export default class Login extends Component {
                     <div><input type="submit" value="Login" /></div>
                 </form>
                 <p className="link" onClick={this.loginToggle}>{this.state.login ? "Sign Up?" : "Login"}</p>
+                <p>!this password field is not secure, please do not add a password you care about!</p>
             </div>
         );
     }

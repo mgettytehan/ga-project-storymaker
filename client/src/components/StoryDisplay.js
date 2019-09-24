@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 const resetButton = (resetHandler) => {
     return (<button onClick={resetHandler}>Reset</button>);
@@ -88,6 +89,7 @@ export default class StoryDisplay extends Component {
             currentNode.storyText = this.convertLinebreaks(currentNode.storyText);
         return (
             <div>
+                <div className="right"><Link to="/stories">Return to stories</Link></div>
                 <div className="right">{resetButton(this.resetNode)}</div>
                 {storyDetails( this.state.story.title )}
                 {currentNode ? storyTextDisplay( currentNode, this.setNewCurrentNode) : "We lost the story..." }
