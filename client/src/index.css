@@ -10,7 +10,7 @@ body {
   color: #FFFFFF;
 }
 
-a {
+a, .link {
   text-decoration: none;
   cursor: pointer;
   color: #FFFFD2;

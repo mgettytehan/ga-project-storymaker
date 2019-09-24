@@ -3,8 +3,8 @@ import { getAllStories, saveStory } from '../helpers/ajaxapi.js';
 
 const storyCard = (story = {}, index = -1, changeHandler = f=>f, saveHandler = f=>f, linkHandler = f=>f) => {
     return (
-        <div class="tile">
-            <p><a id={story._id} onClick={linkHandler}>Edit Story→</a></p>
+        <div className="tile">
+            <p className="link" id={story._id} onClick={linkHandler}>Edit Story→</p>
             <div><input type="text" data-index={index} name="title" value={story.title} onChange={changeHandler} /></div>
             <div><textarea data-index={index} name="summary" value={story.summary} onChange={changeHandler} /></div>
             <div><button type="button" data-index={index} onClick={saveHandler}>Save</button></div>

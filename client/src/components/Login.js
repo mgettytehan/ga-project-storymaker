@@ -4,24 +4,22 @@ const login = author => {
     return fetch('/api/authors/login', {
         method: "POST",
         body: JSON.stringify(author),
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
     })
     .then( res => res.status === 200 ? true : false )
     .catch( err => console.log(err) );
 }
 
-const registerUser = author => {
-    fetch('/api/authors', {
-        method: 'POST',
+const register = author => {
+    return fetch('/api/authors/register', {
+        method: "POST",
         body: JSON.stringify(author),
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
     })
-    .then(
-        f => f
-        //to fill in
-    )
-    .catch(err => console.log(err));
+    .then( res => res.status === 200 ? true : false )
+    .catch( err => console.log(err) );
 }
 
 export default class Login extends Component {
@@ -29,7 +27,8 @@ export default class Login extends Component {
         author: {
             username: "",
             password: ""
-        }
+        },
+        login : true
     }
 
     handleChange = evnt => {
@@ -38,29 +37,39 @@ export default class Login extends Component {
         this.setState({author});
     }
 
-    //change 'false' to trigger notice that login failed
+    //change 'false' to trigger notice that login failed or that register failed
     handleSubmit = evnt => {
         evnt.preventDefault();
-        login(this.state.author).then(
-            result => result ? this.props.history.push(`/dash`) : false
-        );
+        if (this.state.login)
+            login(this.state.author).then(
+                result => result ? this.props.history.push(`/dash`) : false
+            );
+        else
+            register(this.state.author).then(
+                result => result ? this.setState({login: true}) : false
+            );
+    }
+
+    loginToggle = () => {
+        this.setState({login: !this.state.login});
     }
 
     render() {
         return (
             <div>
-                <h3>Login</h3>
+                <h3>{ this.state.login ? "Login" : "Sign Up"}</h3>
                 <form onSubmit={this.handleSubmit}  className="login-form" >
                     <div>
-                        <label for="username">Username:</label><br/>
+                        <label>Username:</label><br/>
                         <input type="text" name="username" onChange={this.handleChange} />
                     </div>
                     <div>
-                        <label for="password">Password:</label><br/>
+                        <label>Password:</label><br/>
                         <input type="password" name="password" onChange={this.handleChange} />
                     </div>
                     <div><input type="submit" value="Login" /></div>
                 </form>
+                <p className="link" onClick={this.loginToggle}>{this.state.login ? "Sign Up?" : "Login"}</p>
             </div>
         );
     }
