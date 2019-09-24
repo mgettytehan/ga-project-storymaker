@@ -88,7 +88,7 @@ export default class StoryDisplay extends Component {
             currentNode.storyText = this.convertLinebreaks(currentNode.storyText);
         return (
             <div>
-                <div>{resetButton(this.resetNode)}</div>
+                <div class="right">{resetButton(this.resetNode)}</div>
                 {storyDetails( this.state.story.title )}
                 {currentNode ? storyTextDisplay( currentNode, this.setNewCurrentNode) : "We lost the story..." }
             </div>

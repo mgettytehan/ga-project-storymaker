@@ -58,7 +58,7 @@ export default class StoryList extends Component {
     render() {
         return(
             <div>
-                <h1>All Stories</h1>
+                <h2>Browse Stories</h2>
                 <div>Search: <input type="text" onChange={this.handleSearchChange}/></div>
                 {listDisplay(this.state.matchingStories, this.linkToStory)}
             </div>
