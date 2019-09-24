@@ -14,10 +14,12 @@ const storyCard = (story = {}, index = -1, changeHandler = f=>f, saveHandler = f
 
 export default class StoryDash extends Component {
     state = {
-        allStories: []
+        allStories: [],
+        show: false
     }
 
     componentWillMount() {
+        console.log(document.cookie);
         getAllStories()
             .then(stories => this.setState(
                 {allStories: stories}
@@ -42,6 +44,7 @@ export default class StoryDash extends Component {
     } 
 
     render() {
+        console.log(document.cookie);
         return (
             <div>
                 {this.state.allStories.map((story, index) => storyCard(story, index, this.handleChange, this.handleSave, this.linkToStory))}

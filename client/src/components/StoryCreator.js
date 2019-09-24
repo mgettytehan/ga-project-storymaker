@@ -42,7 +42,7 @@ const nodeCard = (node, changeNodeHandler) =>
 
 const nodeDisplay = (storyNodes, changeNodeHandler) =>
     (
-        <div className="node-display">
+        <div className="tile-display">
             {Object.keys(storyNodes)
                 .map(id => nodeCard(storyNodes[id], changeNodeHandler))}
         </div>

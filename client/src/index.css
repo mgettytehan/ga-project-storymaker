@@ -125,11 +125,12 @@ button.close {
   cursor: pointer;
 }
 
-.node-display {
+.tile-display {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-auto-rows: 1fr;
   gap: 10px;
+  margin: 15px;
 }
 
 .node-editor-link {

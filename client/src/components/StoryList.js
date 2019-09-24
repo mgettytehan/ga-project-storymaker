@@ -3,9 +3,9 @@ import { getAllStories } from '../helpers/ajaxapi.js';
 
 const storyCard = (story = {}, linkHandler = f=>f) => {
     return (
-        <div>
-            <p id={story._id} onClick={linkHandler}>{story.title ? story.title : "Untitled"}</p>
-            <p>by {story.author ? story.author : "Anonymous"}</p>
+        <div className="tile">
+            <h4 id={story._id} onClick={linkHandler}>{story.title ? story.title : "Untitled"}</h4>
+            <p><em>by {story.author ? story.author : "Anonymous"}</em></p>
             <p>{story.summary ? story.summary : "No summary."}</p>
         </div>
     );
@@ -13,7 +13,7 @@ const storyCard = (story = {}, linkHandler = f=>f) => {
 
 const listDisplay = (allStories = [], linkHandler = f=>f) => {
     return (
-        <div>
+        <div className="tile-display">
             {allStories ?
             allStories.map(story => storyCard(story, linkHandler)) :
             "No stories found"}
@@ -59,7 +59,7 @@ export default class StoryList extends Component {
         return(
             <div>
                 <h1>All Stories</h1>
-                <input type="text" onChange={this.handleSearchChange}/>
+                <div>Search: <input type="text" onChange={this.handleSearchChange}/></div>
                 {listDisplay(this.state.matchingStories, this.linkToStory)}
             </div>
         );
