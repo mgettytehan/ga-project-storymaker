@@ -16,6 +16,10 @@ a, .link {
   color: #FFFFD2;
 }
 
+a:hover, .link:hover {
+  text-decoration: underline;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Merriweather', serif;
   color: #FFFFD2;
@@ -147,4 +151,15 @@ button.close {
 
 .node-editor-link {
   display: block;
+}
+
+@media (max-width: 500px) {
+
+  .mainpage-container {
+    flex-direction: column;
+  }
+  .tile-display {
+    grid-template-columns: 1fr 1fr;
+  }
+
 }
