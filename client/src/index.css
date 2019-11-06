@@ -16,6 +16,11 @@ a, .link {
   color: #FFFFD2;
 }
 
+a:hover, a:active, .link:hover, .link:active {
+  box-shadow: 0 3px 0 rgba(255, 255, 210, 0.3);
+  transition: 300ms;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Merriweather', serif;
   color: #FFFFD2;
@@ -52,7 +57,7 @@ button, input[type=submit] {
   font-family: 'Open Sans', sans-serif;
   color: #000000;
   font-size: 16px;
-  padding: 5px;
+  padding: 10px;
   margin: 5px;
   border-radius: 3px;
   cursor: pointer;
@@ -63,7 +68,7 @@ input, textarea, button, select, option {
   font-family: 'Open Sans', sans-serif;
   border-radius: 3px;
   min-width: 80px;
-  padding: 5px;
+  padding: 10px;
   margin: 5px;
   box-shadow: 0 0 3px black;
 }
@@ -127,7 +132,7 @@ button.close {
 
 .story-link {
   font-size: 16px;
-  color: #FFFFD2;
+  color: white;
   display: block;
   margin: 15px auto;
   padding: 10px;
@@ -135,6 +140,10 @@ button.close {
   background-color: transparent;
   border: 3px solid rgba(255, 255, 210, 0.3);
   cursor: pointer;
+  transition: 500ms;
+}
+.story-link:hover, .story-link:active {
+  background-color: rgba(255,255,210,0.3);
 }
 
 .tile-display {
@@ -147,4 +156,15 @@ button.close {
 
 .node-editor-link {
   display: block;
+}
+
+@media (max-width: 500px) {
+
+  .mainpage-container {
+    flex-direction: column;
+  }
+  .tile-display {
+    grid-template-columns: 1fr 1fr;
+  }
+
 }

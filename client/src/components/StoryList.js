@@ -4,7 +4,7 @@ import { getAllStories } from '../helpers/ajaxapi.js';
 const storyCard = (story = {}, linkHandler = f=>f) => {
     return (
         <div className="tile">
-            <h4 id={story._id} onClick={linkHandler}>{story.title ? story.title : "Untitled"}</h4>
+            <h4 id={story._id} className="link" onClick={linkHandler}>{story.title ? story.title : "Untitled"}</h4>
             <p><em>by {story.author ? story.author : "Anonymous"}</em></p>
             <p>{story.summary ? story.summary : "No summary."}</p>
         </div>
